@@ -1,0 +1,624 @@
+/* ============================================================
+   game.css — the game layer on top of os3.css
+   ============================================================ */
+
+/* ---------- stage: the cinematic canvas over everything ---------- */
+
+#stage {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  pointer-events: none;
+}
+
+/* ---------- title ---------- */
+
+#title-loc, #title-progress {
+  max-width: 60ch;
+}
+
+.title-btns { margin-top: var(--space-md); }
+
+.hero { padding-top: var(--space-lg); cursor: crosshair; }
+
+#end .reveal-list { max-width: 70ch; }
+#end .reveal-list p { margin-bottom: var(--space-sm); }
+#end .reveal-list b { font-weight: 300; color: var(--accent); }
+
+/* ---------- shared: badges ---------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 20px;
+  line-height: 1;
+  padding: 6px 12px;
+  color: var(--text-secondary);
+  border: 1px solid var(--line);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.badge.home, .badge.ally, .badge.safehouse { color: var(--accent); border-color: var(--accent); }
+.badge.lair, .badge.objective { color: var(--text); border-color: var(--line); }
+.badge.space, .badge.comic { color: var(--text-secondary); }
+.badge.new { color: var(--text-secondary); border-style: dashed; }
+.badge.neutral { color: var(--text-secondary); }
+.badge.ground, .badge.lair { border-color: var(--line); }
+
+/* ---------- select ---------- */
+
+#roster-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: var(--space-md);
+}
+
+.roster-head {
+  grid-column: 1 / -1;
+  background: var(--bg);
+  padding: var(--space-sm);
+}
+
+.roster-card {
+  background: var(--bg);
+  padding: var(--space-sm);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 44px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-left: 2px solid transparent;
+}
+
+.roster-card:hover { background: var(--panel); }
+.roster-card.on { border-left-color: var(--accent); background: var(--panel); }
+.roster-card.on h3 { color: var(--accent); }
+
+.roster-glyph { width: 72px; height: 72px; }
+
+.roster-card h3 { font-size: clamp(26px, 2.2vw, 34px); }
+.roster-card .bio { min-height: 5.2em; }
+.roster-card .stat { font-size: 20px; }
+.roster-card .stat b { font-weight: 300; color: var(--text-secondary); }
+.roster-card .stat span { color: var(--text); }
+
+.role-tag {
+  font-size: 20px;
+  line-height: 1;
+  margin: 0;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+/* the role is the one place a second colour is allowed to encode
+   information, because it is the game's core read. the accent
+   stays the only colour that means "the thing that matters". */
+.role-tag.role-tank, .role-btn.role-tank { color: #2f6fd0; }
+.role-tag.role-healer, .role-btn.role-healer { color: #6fbf5a; }
+.role-tag.role-dps, .role-btn.role-dps { color: #ff4612; }
+.role-tag.role-support, .role-btn.role-support { color: #b06ad0; }
+
+[data-theme="light"] .role-tag.role-tank { color: #1b4c96; }
+[data-theme="light"] .role-tag.role-healer { color: #2f7a1f; }
+[data-theme="light"] .role-tag.role-dps { color: #d1350a; }
+[data-theme="light"] .role-tag.role-support { color: #6f2a91; }
+
+/* ---------- act ---------- */
+
+#act .content-row { margin-top: var(--space-md); }
+
+.beat {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+
+.beat .who {
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+
+.beat .line { font-size: clamp(22px, 1.9vw, 26px); font-weight: 300; line-height: 1.35; }
+
+.veh {
+  border-top: 1px solid var(--line);
+  padding: var(--space-sm) 0;
+}
+
+.veh-head { display: flex; align-items: baseline; gap: var(--space-xs); flex-wrap: wrap; margin-bottom: 8px; }
+.veh-head h3 { font-size: clamp(26px, 2.4vw, 36px); }
+.veh p { margin: 0 0 8px; }
+
+.veh-mods {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: 20px;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+/* ---------- map ---------- */
+
+#map-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: var(--space-md);
+}
+
+.map-card {
+  background: var(--bg);
+  padding: var(--space-sm);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 44px;
+  border-top: 2px solid transparent;
+}
+
+.map-card:hover { background: var(--panel); }
+.map-card.home { border-top-color: var(--accent); }
+.map-card.space .map-top h3::after { content: " ↑"; color: var(--text-secondary); }
+.map-card.locked { opacity: 0.5; }
+.map-card .map-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-xs); }
+.map-card h3 { font-size: clamp(26px, 2.2vw, 34px); }
+.map-card p { margin: 0; }
+.map-card .bio { min-height: 6.6em; }
+.map-card .reach { color: var(--text-secondary); }
+
+#travel-note { margin-top: var(--space-sm); color: var(--text-secondary); min-height: 3em; }
+
+/* ============================================================
+   battle
+   ============================================================ */
+
+#battle { padding: var(--space-sm) 0 0; }
+
+.battle-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: var(--space-md);
+  align-items: start;
+}
+
+#field-main {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+#front-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.front-mini { position: relative; border: 1px solid var(--line); }
+
+.mini-cv {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  display: block;
+  background: var(--panel);
+}
+
+.mini-bar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 4px 8px;
+  background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
+}
+
+.mini-bar .mn { font-size: 20px; color: rgba(255,255,255,.8); }
+
+.front-mini.won .mini-bar .mn { color: #8fd18a; }
+.front-mini.lost .mini-bar .mn { color: var(--accent); }
+
+#front-note { margin-top: var(--space-xs); color: var(--text-secondary); }
+
+/* ---------- hud column ---------- */
+
+.hud { position: sticky; top: 66px; }
+
+.hud-head { display: flex; align-items: baseline; gap: var(--space-xs); flex-wrap: wrap; }
+.hud-head h1 { font-size: clamp(40px, 4vw, 60px); }
+#hud-aka { color: var(--text-secondary); font-size: 20px; margin: 0; }
+#hud-role-blurb, #hud-passive { color: var(--text-secondary); font-size: 20px; margin: 6px 0 var(--space-sm); }
+
+.meters { display: flex; flex-direction: column; gap: 8px; margin-bottom: var(--space-sm); }
+
+.meter { display: grid; grid-template-columns: 120px 1fr 70px; align-items: center; gap: var(--space-xs); }
+.meter .ml { font-size: 20px; color: var(--text-secondary); }
+.meter .bar { height: 8px; }
+.meter .mv { font-size: 20px; text-align: right; }
+
+/* ---------- powers ---------- */
+
+#power-bar { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+
+.power {
+  background: var(--bg);
+  padding: 12px var(--space-sm);
+  text-align: left;
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 4px var(--space-xs);
+  align-items: baseline;
+  min-height: 44px;
+}
+
+.power:hover { background: var(--panel); }
+.power.spent { opacity: 0.42; }
+.power .pk { color: var(--text-secondary); font-size: 20px; grid-row: span 2; }
+.power .pn { font-size: 22px; }
+.power .pd { grid-column: 2 / -1; font-size: 20px; color: var(--text-secondary); line-height: 1.3; }
+.power .pc { font-size: 20px; color: var(--text-secondary); grid-row: 1; grid-column: 3; }
+.power .pc.on { color: var(--accent); }
+
+/* ---------- super tiers ---------- */
+
+#tier-bar { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: var(--space-xs); }
+
+.tier {
+  background: var(--bg);
+  padding: 12px var(--space-sm);
+  text-align: left;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 4px var(--space-xs);
+  min-height: 44px;
+  border-left: 2px solid var(--line);
+}
+
+.tier:hover { background: var(--panel); }
+.tier .t-l { font-size: 20px; color: var(--text-secondary); grid-row: span 3; }
+.tier .t-n { font-size: 22px; }
+.tier .t-d { grid-column: 2; font-size: 20px; color: var(--text-secondary); line-height: 1.3; }
+.tier .t-s { grid-column: 2; font-size: 20px; color: var(--text-secondary); }
+.tier .bar { grid-column: 2; margin-top: 4px; }
+
+.tier.ready { border-left-color: var(--accent); }
+.tier.ready .t-l, .tier.ready .t-n, .tier.ready .t-s { color: var(--accent); }
+.tier.ready .bar > i { background: var(--accent); }
+.tier.locked { opacity: 0.5; }
+.tier.ult.ready { border-left-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+
+#team-gate { margin: var(--space-xs) 0 0; }
+
+/* ---------- party strip: the switch ---------- */
+
+#party-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: var(--space-xs); }
+
+.party-btn {
+  background: var(--bg);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  border-bottom: 2px solid transparent;
+}
+
+.party-btn:hover { background: var(--panel); }
+.party-btn.on { border-bottom-color: var(--accent); background: var(--panel); }
+.party-btn.on .pb-n { color: var(--accent); }
+.party-btn.down { opacity: 0.4; }
+.party-btn canvas { width: 44px; height: 44px; }
+.party-btn .pb-n { font-size: 20px; }
+.party-btn .pb-r { font-size: 20px; }
+.party-btn .bar { width: 100%; height: 4px; margin-top: 4px; }
+.party-btn .bar > i { background: var(--text); }
+
+[data-theme="light"] .party-btn .bar > i { background: #000; }
+
+/* ============================================================
+   footage + cast overlays
+   ============================================================ */
+
+#footage-card {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  z-index: 860;
+  width: min(900px, 88vw);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  padding: var(--space-sm);
+  display: none;
+}
+
+#footage-card.on { display: block; animation: riseIn 0.4s ease-out both; }
+
+.fc-tag { display: block; font-size: 20px; color: var(--accent); margin-bottom: 6px; }
+.fc-title { display: block; font-weight: 200; font-size: clamp(28px, 3vw, 40px); line-height: 1.05; margin-bottom: 8px; }
+.fc-text { margin: 0; font-size: 24px; line-height: 1.35; }
+
+#cast-card {
+  position: fixed;
+  left: 0; right: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 850;
+  pointer-events: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0,0,0,.55);
+}
+
+#cast-card.on { display: flex; animation: castIn 1.25s ease-out both; }
+#cast-card.evil { background: rgba(60,0,0,.6); }
+
+@keyframes castIn {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.cast-inner { text-align: center; padding: 0 var(--space-md); }
+
+.ct-tier {
+  display: block;
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+  margin-bottom: var(--space-xs);
+}
+
+.ct-name {
+  display: block;
+  font-weight: 200;
+  font-size: clamp(52px, 9vw, 132px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.ct-sub {
+  display: block;
+  font-size: 24px;
+  color: rgba(255,255,255,.75);
+  margin-top: var(--space-xs);
+  max-width: 46ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ct-tick {
+  display: block;
+  font-size: 20px;
+  color: rgba(255,255,255,.5);
+  margin-top: var(--space-sm);
+}
+
+#cast-card .cast-rule { width: 120px; height: 1px; background: var(--accent); margin: var(--space-sm) auto 0; }
+
+.ct-comic {
+  display: block;
+  font-size: 20px;
+  color: rgba(255,255,255,.45);
+  margin-top: var(--space-sm);
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1200px) {
+  .battle-grid { grid-template-columns: 1fr 360px; gap: var(--space-sm); }
+  #roster-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 1024px) {
+  .battle-grid { grid-template-columns: 1fr; }
+  .hud { position: static; }
+  #map-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  #roster-grid { grid-template-columns: repeat(2, 1fr); }
+  #map-grid { grid-template-columns: 1fr; }
+  .beat { grid-template-columns: 1fr; gap: 6px; }
+  .meter { grid-template-columns: 90px 1fr 60px; }
+  .roster-card .bio, .map-card .bio { min-height: 0; }
+  #front-strip { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   the non-combat layer. same visual grammar as the field —
+   grid, accent, hairlines, mono HUD — so a puzzle and a fight
+   look like one game.
+   ============================================================ */
+
+.display-sm {
+  font-size: clamp(40px, 5vw, 56px);
+  font-weight: 300;
+  line-height: 1;
+  margin: 4px 0;
+  letter-spacing: -0.02em;
+}
+.meta.bad { color: var(--accent); }
+
+#mission { padding-bottom: var(--space-lg); }
+
+.mission-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding-top: var(--space-sm);
+}
+.mission-head .h1 { margin: 0; font-size: clamp(32px, 4vw, 52px); }
+.mis-timer { text-align: right; }
+.mis-timer .display-sm { color: var(--accent); }
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-md);
+  align-items: start;
+}
+
+#mis-canvas {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  background: #06070a;
+  border-left: 2px solid var(--accent);
+}
+
+#mis-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: var(--space-sm) 0;
+}
+#mis-controls .btn.hold.on {
+  background: var(--accent);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+#mis-say {
+  min-height: 3em;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--text);
+  margin: var(--space-xs) 0;
+}
+#mis-stakes { color: var(--accent); font-size: 22px; }
+
+.mis-side { border-left: 1px solid var(--line); padding-left: var(--space-md); }
+
+/* ---------- the count: who is still on it ---------- */
+.ledger-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: var(--space-xs);
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 20px;
+}
+.ledger-row .lr-i { color: var(--text-secondary); font-weight: 300; }
+.ledger-row .lr-w { color: var(--text); }
+.ledger-row .lr-s { color: var(--text-secondary); font-size: 18px; }
+.ledger-row.gone { opacity: .55; }
+.ledger-row.gone .lr-w { color: var(--accent); text-decoration: line-through; }
+.ledger-row.gone .lr-s { color: var(--accent); }
+
+/* ---------- conclusions ---------- */
+.thread {
+  border-left: 2px solid var(--accent);
+  padding-left: var(--space-sm);
+}
+.thread-opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  font: inherit;
+  font-size: 21px;
+  padding: 10px var(--space-sm);
+  margin: 6px 0;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.thread-opt:hover:not(:disabled) { border-color: var(--accent); }
+.thread-opt:disabled { cursor: default; opacity: .6; }
+.thread-opt.held { border-color: var(--accent); color: var(--accent); opacity: 1; }
+.thread-opt.broken { border-style: dashed; opacity: .45; }
+
+/* ---------- the case board ---------- */
+#clue-canvas {
+  width: 100%;
+  height: 320px;
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+@media (max-width: 1200px) {
+  .mission-grid { grid-template-columns: 1fr 340px; gap: var(--space-sm); }
+}
+
+@media (max-width: 1024px) {
+  .mission-grid { grid-template-columns: 1fr; }
+  .mis-side { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: var(--space-sm); }
+}
+
+/* ---------- a place the run has already lost ---------- */
+.map-card.closed {
+  opacity: .5;
+  border-style: dashed;
+  border-color: var(--danger, #c0392b);
+  cursor: not-allowed;
+}
+.map-card.closed:hover { transform: none; }
+.map-card.closed .meta.bio { opacity: .7; }
+.badge.closed {
+  background: transparent;
+  border-color: var(--danger, #c0392b);
+  color: var(--danger, #c0392b);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+/* ---------- the running bill for a run ---------- */
+#mis-cost { margin-top: var(--space-sm); }
+#mis-cost h4 { margin: 0 0 var(--space-xs) 0; color: var(--dim); }
+#mis-cost .meta.bad { margin: 0 0 var(--space-xs) 0; line-height: 1.5; }
+
+/* ---------- the support vehicle: a readout, not a hero card ----------
+   deliberately quieter than .tier and .power. it never sits in the same
+   visual rank as a hero decision, and it is the only block here that
+   carries its own hull and charge meters. */
+#veh-panel[hidden] { display: none; }
+.veh-head {
+  display: flex; align-items: center; gap: var(--space-sm);
+  padding: var(--space-sm); margin-top: var(--space-xs);
+  border: 1px solid var(--line); border-left-width: 3px;
+  background: var(--panel);
+}
+.veh-glyph { width: 40px; height: 40px; flex: 0 0 40px; opacity: .9; }
+.veh-name { font-size: 18px; letter-spacing: .01em; }
+.veh-kind { font-size: 13px; color: var(--dim); }
+.veh-meters { margin-top: var(--space-sm); }
+
+.veh-rows { margin-top: var(--space-sm); }
+.veh-row {
+  display: grid; grid-template-columns: 68px 1fr; gap: 2px var(--space-sm);
+  padding: var(--space-xs) 0; border-top: 1px solid var(--line);
+}
+.veh-row .vk { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--dim); padding-top: 3px; }
+.veh-row .vval { font-size: 16px; }
+.veh-row .vsub { grid-column: 2; font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+
+.veh-cast { width: 100%; margin-top: var(--space-sm); }
+.veh-cast.off { opacity: .4; cursor: not-allowed; }
+.veh-foot { margin: var(--space-xs) 0 0; font-size: 12px; line-height: 1.5; }

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>avengers endgame — florida</title>
+<meta name="description" content="an offline rpg set in central florida and off-world. three heroes, three live battle fronts, one of them is you.">
+<link rel="stylesheet" href="css/os3.css">
+<link rel="stylesheet" href="css/game.css">
+<link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+
+<header>
+  <span class="mark">avengers endgame / florida</span>
+  <span class="mid" id="header-mid">the new avengers compound — west palm beach</span>
+  <div class="tools">
+    <button class="icon-btn" id="btn-pause" aria-label="pause cinematic interruptions"></button>
+    <button class="icon-btn" id="theme-toggle" aria-label="switch theme"></button>
+  </div>
+</header>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<main class="container">
+
+  <!-- ============================================================
+       title
+       ============================================================ -->
+  <section class="screen on" id="title">
+    <div class="hero">
+      <h1 class="display">endgame</h1>
+      <hr class="rule">
+    </div>
+    <div class="content-row">
+      <div>
+        <p class="h1" id="title-loc"></p>
+        <p class="meta dim" id="title-progress"></p>
+        <p>Three heroes. Three battle fronts running at once. You drive one of them — the other two keep swinging while you are somewhere else, and you can walk between them mid-swing.</p>
+        <p class="meta dim">Florida, mostly. Space, when the state runs out.</p>
+      </div>
+      <div class="stack title-btns">
+        <button class="btn" id="btn-start">start a run</button>
+        <button class="btn ghost" id="title-resume">resume</button>
+      </div>
+    </div>
+    <hr class="rule">
+    <div class="row">
+      <p class="meta dim">tap the title for stickers</p>
+      <p class="meta dim keys-hint"><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> powers &nbsp; <kbd>q</kbd> <kbd>w</kbd> <kbd>e</kbd> super tiers &nbsp; <kbd>z</kbd> <kbd>x</kbd> <kbd>c</kbd> switch hero</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       select
+       ============================================================ -->
+  <section class="screen" id="select">
+    <p class="meta dim" id="party-line"></p>
+    <h1 class="h1">pick your three</h1>
+    <hr class="rule">
+    <div id="roster-grid"></div>
+    <hr class="rule">
+    <div class="row">
+      <button class="btn" id="sel-go">continue</button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       act brief
+       ============================================================ -->
+  <section class="screen" id="act">
+    <p class="meta dim" id="act-num"></p>
+    <h1 class="h1" id="act-title"></h1>
+    <hr class="rule">
+    <div class="content-row">
+      <div>
+        <p id="act-obj"></p>
+        <p class="meta dim" id="act-loc"></p>
+        <p class="meta dim" id="act-blurb"></p>
+        <div id="act-brief"></div>
+      </div>
+      <div class="stack">
+        <p class="meta dim">deploying</p>
+        <div id="act-deploy"></div>
+        <button class="btn" id="act-go">to the map</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       map
+       ============================================================ -->
+  <section class="screen" id="map">
+    <h1 class="h1">florida, and off it</h1>
+    <hr class="rule">
+    <p class="meta dim" id="fleet-line"></p>
+    <div id="map-grid"></div>
+    <hr class="rule">
+    <p class="meta" id="travel-note"></p>
+    <div class="row">
+      <button class="btn" id="to-battle">deploy to the front</button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       mission — non-combat. same visual language, real stakes.
+       ============================================================ -->
+  <section class="screen" id="mission">
+    <div class="mission-head">
+      <div>
+        <p class="meta dim" id="mis-verb">decrypt</p>
+        <h1 class="h1" id="mis-title">—</h1>
+        <p class="meta" id="mis-where"></p>
+      </div>
+      <div class="mis-timer">
+        <p class="meta dim" id="mis-clock-label">window</p>
+        <p class="display-sm" id="mis-clock">0.0</p>
+      </div>
+    </div>
+    <hr class="rule">
+    <div class="mission-grid">
+      <div>
+        <canvas id="mis-canvas" aria-label="mission scene"></canvas>
+        <div id="mis-controls"></div>
+        <p class="meta" id="mis-say"></p>
+        <p class="meta dim" id="mis-stakes"></p>
+      </div>
+      <div class="mis-side">
+        <p class="meta dim">the count</p>
+        <p class="display-sm" id="mis-count">10</p>
+        <p class="meta dim" id="mis-count-note"></p>
+        <div id="mis-ledger"></div>
+
+        <div id="mis-cost"></div>
+        <p class="meta dim" style="margin-top:32px">the brief</p>
+        <p class="meta" id="mis-brief"></p>
+
+        <p class="meta dim" style="margin-top:32px">conclusions open</p>
+        <div id="mis-thread"></div>
+
+        <p class="meta dim" style="margin-top:32px">the case board</p>
+        <canvas id="clue-canvas" aria-label="evidence board"></canvas>
+        <p class="meta dim" id="clue-count"></p>
+      </div>
+    </div>
+    <hr class="rule">
+    <div class="row">
+      <button class="btn" id="mis-continue" disabled>continue to the fronts</button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       battle
+       ============================================================ -->
+  <section class="screen" id="battle">
+    <div class="battle-grid">
+      <div>
+        <canvas id="field-main" aria-label="primary battle front"></canvas>
+        <div id="front-strip"></div>
+        <p class="meta dim" id="front-note"></p>
+      </div>
+
+      <div class="hud">
+        <div class="hud-head">
+          <h1 id="hud-name">—</h1>
+          <span class="role-tag" id="hud-role"></span>
+        </div>
+        <p class="meta" id="hud-aka"></p>
+        <p class="meta" id="hud-role-blurb"></p>
+        <p class="meta" id="hud-passive"></p>
+
+        <div class="meters">
+          <div class="meter"><span class="ml">hit points</span><span class="bar"><i id="hud-hp"></i></span><span class="mv" id="hud-hp-v"></span></div>
+          <div class="meter"><span class="ml">energy</span><span class="bar"><i id="hud-energy"></i></span><span class="mv" id="hud-energy-v"></span></div>
+          <div class="meter"><span class="ml">ultimate</span><span class="bar"><i id="hud-super"></i></span><span class="mv" id="super-pct">0%</span></div>
+        </div>
+
+        <p class="meta dim">signature powers</p>
+        <div id="power-bar"></div>
+
+        <p class="meta dim" style="margin-top:32px">super tiers</p>
+        <div id="tier-bar"></div>
+        <p class="meta" id="team-gate"></p>
+
+        <div id="veh-panel" hidden>
+          <p class="meta dim" style="margin-top:32px">support vehicle — it fights, it never decides</p>
+          <div id="veh-body"></div>
+        </div>
+
+        <p class="meta dim" style="margin-top:32px">switch — the other two keep fighting</p>
+        <div id="party-strip"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       end
+       ============================================================ -->
+  <section class="screen" id="end">
+    <p class="meta dim">act 6 of 6 — clean</p>
+    <h1 class="h1">they are back</h1>
+    <hr class="rule">
+    <p>Half the field walks through the door at the same time. Nobody calls it a victory. Somebody takes the plates off, somebody else cannot remember why the plates were on.</p>
+    <hr class="rule">
+    <p class="meta dim">recovered, in order</p>
+    <div class="reveal-list" id="end-reveals"></div>
+    <hr class="rule">
+    <div class="row">
+      <button class="btn" id="end-restart">run it again</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>an offline rpg. every frame, sound, and character on screen is drawn by code in this folder.</p>
+  <p>procedural footage · no borrowed clips · works with the network off</p>
+</footer>
+
+<!-- full-stage cinematic footage -->
+<div id="footage-card">
+  <span class="fc-tag"></span>
+  <span class="fc-title"></span>
+  <p class="fc-text"></p>
+</div>
+
+<!-- power cast camera treatment -->
+<div id="cast-card">
+  <div class="cast-inner">
+    <span class="ct-tier"></span>
+    <span class="ct-name"></span>
+    <span class="ct-sub"></span>
+    <span class="ct-comic"></span>
+    <span class="cast-rule"></span>
+    <span class="ct-tick"></span>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/field.js"></script>
+<script src="js/footage.js"></script>
+<script src="js/mission.js"></script>
+<script src="js/game.js"></script>
+<script src="js/touch.js"></script>
+</body>
+</html>
